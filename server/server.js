@@ -12,7 +12,6 @@ import companyRoutes from "./routes/companyRoutes.js";
 import JobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
-// Initialize Express
 const app = express();
 
 // Middleware
@@ -27,10 +26,9 @@ app.use("/api/company", companyRoutes);
 app.use("/api/jobs", JobRoutes);
 app.use("/api/users", userRoutes);
 
-// Sentry error handler
 Sentry.setupExpressErrorHandler(app);
 
-// ✅ FIXED START (IMPORTANT)
+// ✅ START SERVER (IMPORTANT)
 const startServer = async () => {
   try {
     await connectDB();
@@ -38,11 +36,12 @@ const startServer = async () => {
 
     const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Server failed to start:", error);
+    process.exit(1); // 🔥 THIS IS IMPORTANT
   }
 };
 
